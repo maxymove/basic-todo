@@ -1,13 +1,16 @@
 <template>
   <div>
-    <input
-      type="text"
-      class="todo-input"
-      placeholder="Don't be lazy!"
-      v-model="newTodo"
-      @keyup.enter="addTodo"
-    />
-    <div v-for="todo in todos" :key="todo.id" class="todo-item">
+    <h1 style="text-align: center">{{ headline }}</h1>
+    <div>
+      <input
+        type="text"
+        class="todo-input"
+        placeholder="what's your goal today"
+        v-model="newTodo"
+        @keyup.enter="addTodo"
+      />
+    </div>
+    <div v-for="todo in todosFilter" :key="todo.id" class="todo-item">
       <div v-if="todo.editing">
         <input
           type="text"
@@ -19,7 +22,13 @@
         />
       </div>
       <div v-else class="todo-item-label" @dblclick="editTodo(todo)">
-        {{ todo.title }}
+        <div v-if="!todo.completed">
+          <input type="checkbox" v-model="todo.completed" />
+          {{ todo.title }}
+        </div>
+        <div v-else>
+          <del>{{ todo.title }}</del>
+        </div>
       </div>
 
       <div v-if="todo.editing">
@@ -41,26 +50,46 @@
         </span>
       </div>
     </div>
+    <div class="item-button">
+      <div>
+        <button @click="filter = 'all'">All</button>
+        <button @click="filter = 'active'">Active</button>
+        <button @click="filter = 'completed'">Completed</button>
+      </div>
+      <div>
+        <button @click="clearCompleted">Clear Completed</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "todo-list",
+  props: {
+    headline: String,
+  },
   data() {
     return {
       newTodo: "",
+      filter: "all",
       todos: [
         {
           id: 1,
           title: "running",
-          completed: false,
+          completed: true,
           editing: false,
         },
         {
           id: 2,
           title: "sleep",
           completed: false,
+          editing: false,
+        },
+        {
+          id: 3,
+          title: "eat",
+          completed: true,
           editing: false,
         },
       ],
@@ -104,6 +133,20 @@ export default {
       todo.editing = false;
       this.todoCached = "";
     },
+    clearCompleted() {
+      this.todos = this.todos.filter((todo) => !todo.completed);
+    },
+  },
+  computed: {
+    todosFilter() {
+      if (this.filter == "all") {
+        return this.todos;
+      } else if (this.filter == "active") {
+        return this.todos.filter((todo) => !todo.completed);
+      } else {
+        return this.todos.filter((todo) => todo.completed);
+      }
+    },
   },
 };
 </script>
@@ -137,9 +180,54 @@ export default {
 // important css syntax to apply to only the span inside that particular div
 div.action-icon > span {
   cursor: pointer;
-  margin-left: 5px;
+  margin-left: 25px;
   &:hover {
     color: blue;
+  }
+}
+
+.item-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  button {
+    cursor: pointer;
+    &:hover {
+      color: black;
+    }
+  }
+  button:not(:first-of-type) {
+    margin-left: 5px;
+  }
+}
+
+//
+
+.button1 {
+  display: inline-block;
+  padding: 0.35em 1.2em;
+  border: 0.1em solid #ffffff;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 300;
+  color: #ffffff;
+  text-align: center;
+  transition: all 0.2s;
+
+  &:hover {
+    color: #000000;
+    background-color: #ffffff;
+  }
+}
+
+@media all and (max-width: 30em) {
+  .button1 {
+    display: block;
+    margin: 0.4em auto;
   }
 }
 </style>
