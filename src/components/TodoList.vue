@@ -192,42 +192,23 @@ div.action-icon > span {
   justify-content: space-between;
   button {
     cursor: pointer;
+    //
+    color: #494949 !important;
+    text-decoration: none;
+    background: #ffffff;
+    padding: 10px;
+    //
+
     &:hover {
-      color: black;
+      // color: black;
+
+      color: #ffffff !important;
+      background: darkslategray;
+      border-color: black !important;
     }
   }
   button:not(:first-of-type) {
     margin-left: 5px;
-  }
-}
-
-//
-
-.button1 {
-  display: inline-block;
-  padding: 0.35em 1.2em;
-  border: 0.1em solid #ffffff;
-  margin: 0 0.3em 0.3em 0;
-  border-radius: 0.12em;
-  box-sizing: border-box;
-  text-decoration: none;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-weight: 300;
-  color: #ffffff;
-  text-align: center;
-  transition: all 0.2s;
-
-  &:hover {
-    color: #000000;
-    background-color: #ffffff;
-  }
-}
-
-@media all and (max-width: 30em) {
-  .button1 {
-    display: block;
-    margin: 0.4em auto;
   }
 }
 </style>
