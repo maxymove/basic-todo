@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="container">
-    <!-- <img alt="Vue logo" src="./assets/logo.png" class="logo" /> -->
+    <img alt="Vue logo" src="./assets/logo.png" class="logo" />
     <todo-list headline="Let's get productive!" />
   </div>
 </template>
@@ -39,6 +39,7 @@ export default {
 .logo {
   display: block;
   margin: 20px auto;
-  height: 75px;
+  height: 200px;
+  /* height: 75px; */
 }
 </style>

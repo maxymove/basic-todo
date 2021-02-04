@@ -10,6 +10,7 @@
         @keyup.enter="addTodo"
       />
     </div>
+
     <div v-for="todo in todosFilter" :key="todo.id" class="todo-item">
       <div v-if="todo.editing">
         <input
@@ -50,6 +51,7 @@
         </span>
       </div>
     </div>
+
     <div class="item-button">
       <div>
         <button @click="filter = 'all'">All</button>
@@ -60,6 +62,8 @@
         <button @click="clearCompleted">Clear Completed</button>
       </div>
     </div>
+
+    <div class="item-remaining"><strong>{{ itemsRemaining }} items remaining</strong> </div>
   </div>
 </template>
 
@@ -90,6 +94,18 @@ export default {
           id: 3,
           title: "eat",
           completed: true,
+          editing: false,
+        },
+        {
+          id: 4,
+          title: "AoT ep. 55",
+          completed: true,
+          editing: false,
+        },
+        {
+          id: 5,
+          title: "review katakana",
+          completed: false,
           editing: false,
         },
       ],
@@ -138,6 +154,9 @@ export default {
     },
   },
   computed: {
+    itemsRemaining() {
+      return this.todos.filter((todo) => !todo.completed).length;
+    },
     todosFilter() {
       if (this.filter == "all") {
         return this.todos;
@@ -177,38 +196,48 @@ export default {
   }
 }
 
+.todo-item-edit {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  text-align: center;
+  color: #2c3e50;
+  font-size: 24px;
+}
+
 // important css syntax to apply to only the span inside that particular div
 div.action-icon > span {
   cursor: pointer;
   margin-left: 25px;
   &:hover {
-    color: blue;
+    color: darkslategrey;
   }
 }
 
 .item-button {
+  margin-top: 3%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   button {
     cursor: pointer;
-    //
-    color: #494949 !important;
-    text-decoration: none;
+    color: #2c3e50;
+    font-size: 18px;
     background: #ffffff;
     padding: 10px;
-    //
-
     &:hover {
-      // color: black;
-
       color: #ffffff !important;
-      background: darkslategray;
+      background: #2c3e50;
       border-color: black !important;
     }
   }
   button:not(:first-of-type) {
     margin-left: 5px;
   }
+}
+
+.item-remaining {
+  margin-top: 12px;
+  text-align: right;
+  color: #2c3e50;
+  font-size: 18px;
 }
 </style>
