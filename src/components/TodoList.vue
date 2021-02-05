@@ -11,46 +11,13 @@
       />
     </div>
 
-    <div v-for="todo in todosFilter" :key="todo.id" class="todo-item">
-      <div v-if="todo.editing">
-        <input
-          type="text"
-          class="todo-item-edit"
-          v-model="todo.title"
-          @keyup.enter="saveEdit(todo)"
-          @keyup.esc="cancelEdit(todo)"
-          v-focus
-        />
-      </div>
-      <div v-else class="todo-item-label" @dblclick="editTodo(todo)">
-        <div v-if="!todo.completed">
-          <input type="checkbox" v-model="todo.completed" />
-          {{ todo.title }}
-        </div>
-        <div v-else>
-          <del>{{ todo.title }}</del>
-        </div>
-      </div>
-
-      <div v-if="todo.editing">
-        <div class="action-icon">
-          <span @click="saveEdit(todo)"
-            ><i class="fas fa-check-circle"></i
-          ></span>
-          <span @click="cancelEdit(todo)"
-            ><i class="fas fa-window-close"></i
-          ></span>
-        </div>
-      </div>
-      <div v-else class="action-icon">
-        <span @click="editTodo(todo)">
-          <i class="fas fa-edit"></i>
-        </span>
-        <span @click="removeTodo(todo.id)">
-          <i class="fas fa-trash"></i>
-        </span>
-      </div>
-    </div>
+    <todo-item
+      v-for="todo in todosFilter"
+      :key="todo.id"
+      class="todo-item"
+      :todo="todo"
+      @remove:todo="removeTodo"
+    />
 
     <div class="item-button">
       <div>
@@ -63,12 +30,16 @@
       </div>
     </div>
 
-    <div class="item-remaining"><strong>{{ itemsRemaining }} items remaining</strong> </div>
+    <div class="item-remaining">
+      <strong>{{ itemsRemaining }} items remaining</strong>
+    </div>
   </div>
 </template>
 
 <script>
+import TodoItem from "./TodoItem.vue";
 export default {
+  components: { TodoItem },
   name: "todo-list",
   props: {
     headline: String,
