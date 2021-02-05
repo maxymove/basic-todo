@@ -39,7 +39,7 @@ export default {
 .logo {
   display: block;
   margin: 20px auto;
-  height: 200px;
+  height: 150px;
   /* height: 75px; */
 }
 </style>
