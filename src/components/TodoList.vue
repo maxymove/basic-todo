@@ -1,16 +1,7 @@
 <template>
   <div>
     <h1 style="text-align: center">{{ headline }}</h1>
-    <div>
-      <input
-        type="text"
-        class="todo-input"
-        placeholder="what's your goal today"
-        v-model="newTodo"
-        @keyup.enter="addTodo"
-      />
-    </div>
-
+    <add-todo @add:todo="addTodo" />
     <todo-item
       v-for="todo in todosFilter"
       :key="todo.id"
@@ -37,16 +28,16 @@
 </template>
 
 <script>
+import AddTodo from "./AddTodo.vue";
 import TodoItem from "./TodoItem.vue";
 export default {
-  components: { TodoItem },
+  components: { TodoItem, AddTodo },
   name: "todo-list",
   props: {
     headline: String,
   },
   data() {
     return {
-      newTodo: "",
       filter: "all",
       todos: [
         {
@@ -67,58 +58,25 @@ export default {
           completed: true,
           editing: false,
         },
-        {
-          id: 4,
-          title: "AoT ep. 55",
-          completed: true,
-          editing: false,
-        },
-        {
-          id: 5,
-          title: "review katakana",
-          completed: false,
-          editing: false,
-        },
       ],
     };
   },
-  directives: {
-    // will force focus when enter editing mode
-    focus: {
-      // directive definition
-      inserted: function(el) {
-        el.focus();
-      },
-    },
-  },
+
   methods: {
-    addTodo() {
+    addTodo(newTodoTitle) {
       const lastId =
         this.todos.length > 0 ? this.todos[this.todos.length - 1].id : 0;
-      const id = lastId + 1;
+      const newId = lastId + 1;
       this.todos.push({
-        id: id,
-        title: this.newTodo,
+        id: newId,
+        title: newTodoTitle,
         completed: false,
         editing: false,
         titleCached: "",
       });
-      this.newTodo = "";
     },
     removeTodo(id) {
       this.todos = this.todos.filter((todo) => todo.id !== id);
-    },
-    editTodo(todo) {
-      todo.titleCached = todo.title;
-      todo.editing = true;
-    },
-    saveEdit(todo) {
-      todo.editing = false;
-    },
-    cancelEdit(todo) {
-      todo.title = todo.titleCached;
-      todo.editing = false;
-      this.todoCached = "";
     },
     clearCompleted() {
       this.todos = this.todos.filter((todo) => !todo.completed);

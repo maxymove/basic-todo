@@ -5,12 +5,13 @@
         type="text"
         class="todo-item-edit"
         v-model="todo.title"
-        @keyup.enter="saveEdit(todo)"
-        @keyup.esc="cancelEdit(todo)"
+        @keyup.enter="saveEdit()"
+        @keyup.esc="cancelEdit()"
         v-focus
       />
     </div>
-    <div v-else class="todo-item-label" @dblclick="editTodo(todo)">
+
+    <div v-else class="todo-item-label" @dblclick="editTodo()">
       <div v-if="!todo.completed">
         <input type="checkbox" v-model="todo.completed" />
         {{ todo.title }}
@@ -22,14 +23,12 @@
 
     <div v-if="todo.editing">
       <div class="action-icon">
-        <span @click="saveEdit(todo)"><i class="fas fa-check-circle"></i></span>
-        <span @click="cancelEdit(todo)"
-          ><i class="fas fa-window-close"></i
-        ></span>
+        <span @click="saveEdit()"><i class="fas fa-check-circle"></i></span>
+        <span @click="cancelEdit()"><i class="fas fa-window-close"></i></span>
       </div>
     </div>
     <div v-else class="action-icon">
-      <span @click="editTodo(todo)">
+      <span @click="editTodo()">
         <i class="fas fa-edit"></i>
       </span>
       <span @click="removeTodo(todo.id)">
@@ -52,6 +51,28 @@ export default {
   methods: {
     removeTodo(id) {
       this.$emit("remove:todo", id);
+    },
+    editTodo() {
+      this.todo.titleCached = this.todo.title;
+      this.todo.editing = true;
+    },
+    saveEdit() {
+      this.todo.editing = false;
+    },
+    cancelEdit() {
+      this.todo.title = this.todo.titleCached;
+      this.todo.editing = false;
+      // this.todo.titleCached = "";
+    },
+  },
+
+  directives: {
+    // will force focus when enter editing mode
+    focus: {
+      // directive definition
+      inserted: function(el) {
+        el.focus();
+      },
     },
   },
 };
