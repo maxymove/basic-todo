@@ -10,16 +10,10 @@
       @remove:todo="removeTodo"
     />
 
-    <div class="item-button">
-      <div>
-        <button @click="filter = 'all'">All</button>
-        <button @click="filter = 'active'">Active</button>
-        <button @click="filter = 'completed'">Completed</button>
-      </div>
-      <div>
-        <button @click="clearCompleted">Clear Completed</button>
-      </div>
-    </div>
+    <todo-list-filter
+      @change:filter="changeFilter"
+      @clear:todos="clearCompleted"
+    />
 
     <div class="item-remaining">
       <strong>{{ itemsRemaining }} items remaining</strong>
@@ -30,8 +24,9 @@
 <script>
 import AddTodo from "./AddTodo.vue";
 import TodoItem from "./TodoItem.vue";
+import TodoListFilter from "./TodoListFilter.vue";
 export default {
-  components: { TodoItem, AddTodo },
+  components: { TodoItem, AddTodo, TodoListFilter },
   name: "todo-list",
   props: {
     headline: String,
@@ -80,6 +75,9 @@ export default {
     },
     clearCompleted() {
       this.todos = this.todos.filter((todo) => !todo.completed);
+    },
+    changeFilter(filter) {
+      this.filter = filter;
     },
   },
   computed: {
