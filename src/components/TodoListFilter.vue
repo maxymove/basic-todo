@@ -15,10 +15,10 @@
 export default {
   methods: {
     changeFilter(filter) {
-      this.$emit("change:filter", filter);
+      this.$store.commit("changeFilter", filter);
     },
     clearCompleted() {
-      this.$emit("clear:todos");
+      this.$store.commit("clearCompleted");
     },
   },
 };

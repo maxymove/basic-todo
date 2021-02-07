@@ -50,7 +50,7 @@ export default {
 
   methods: {
     removeTodo(id) {
-      this.$emit("remove:todo", id);
+      this.$store.commit("removeTodo", id);
     },
     editTodo() {
       this.todo.titleCached = this.todo.title;
@@ -58,11 +58,11 @@ export default {
     },
     saveEdit() {
       this.todo.editing = false;
+      this.$store.commit("saveEdit", this.todo.id, this.todo);
     },
     cancelEdit() {
       this.todo.title = this.todo.titleCached;
       this.todo.editing = false;
-      // this.todo.titleCached = "";
     },
   },
 

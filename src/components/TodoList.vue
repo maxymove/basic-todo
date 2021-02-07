@@ -1,19 +1,15 @@
 <template>
   <div>
     <h1 style="text-align: center">{{ headline }}</h1>
-    <add-todo @add:todo="addTodo" />
+    <add-todo />
     <todo-item
       v-for="todo in todosFilter"
       :key="todo.id"
       class="todo-item"
       :todo="todo"
-      @remove:todo="removeTodo"
     />
 
-    <todo-list-filter
-      @change:filter="changeFilter"
-      @clear:todos="clearCompleted"
-    />
+    <todo-list-filter />
 
     <div class="item-remaining">
       <strong>{{ itemsRemaining }} items remaining</strong>
@@ -31,67 +27,14 @@ export default {
   props: {
     headline: String,
   },
-  data() {
-    return {
-      filter: "all",
-      todos: [
-        {
-          id: 1,
-          title: "running",
-          completed: true,
-          editing: false,
-        },
-        {
-          id: 2,
-          title: "sleep",
-          completed: false,
-          editing: false,
-        },
-        {
-          id: 3,
-          title: "eat",
-          completed: true,
-          editing: false,
-        },
-      ],
-    };
-  },
 
-  methods: {
-    addTodo(newTodoTitle) {
-      const lastId =
-        this.todos.length > 0 ? this.todos[this.todos.length - 1].id : 0;
-      const newId = lastId + 1;
-      this.todos.push({
-        id: newId,
-        title: newTodoTitle,
-        completed: false,
-        editing: false,
-        titleCached: "",
-      });
-    },
-    removeTodo(id) {
-      this.todos = this.todos.filter((todo) => todo.id !== id);
-    },
-    clearCompleted() {
-      this.todos = this.todos.filter((todo) => !todo.completed);
-    },
-    changeFilter(filter) {
-      this.filter = filter;
-    },
-  },
+  methods: {},
   computed: {
-    itemsRemaining() {
-      return this.todos.filter((todo) => !todo.completed).length;
-    },
     todosFilter() {
-      if (this.filter == "all") {
-        return this.todos;
-      } else if (this.filter == "active") {
-        return this.todos.filter((todo) => !todo.completed);
-      } else {
-        return this.todos.filter((todo) => todo.completed);
-      }
+      return this.$store.getters.todosFilter;
+    },
+    itemsRemaining() {
+      return this.$store.getters.itemsRemaining;
     },
   },
 };
